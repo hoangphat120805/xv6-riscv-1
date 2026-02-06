@@ -6,6 +6,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "vm.h"
+#include "getproc.h"
 
 uint64
 sys_exit(void)
@@ -106,4 +107,15 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+uint64 
+sys_get_procs(void)
+{
+  uint64 addr;
+  argaddr(0, &addr);
+
+  if (addr == 0)
+    return -1;
+  return getprocs(addr);
 }
