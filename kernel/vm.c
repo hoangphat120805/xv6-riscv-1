@@ -583,3 +583,41 @@ ismapped(pagetable_t pagetable, uint64 va)
   }
   return 0;
 }
+
+// Unmap the shared memory region
+int
+munmap(uint64 va)
+{
+  struct proc *p = myproc();
+  pte_t *pte;
+
+  if (va != SHMEM_REGION) {
+    return -1;
+  }
+
+  pte = walk(p->pagetable, va, 0);
+
+  if (pte == 0 || (*pte & PTE_V) == 0) {
+    return -1;
+  }
+
+  *pte = 0;
+
+  acquire(&shmem_page.lock);
+  
+  if (shmem_page.allocated) {
+    shmem_page.refcount--;
+
+    if (shmem_page.refcount == 0) {
+      kfree((void*)shmem_page.pa);
+      shmem_page.pa = 0;
+      shmem_page.allocated = 0;
+    }
+  }
+  
+  release(&shmem_page.lock);
+
+  sfence_vma(); 
+
+  return 0;
+}
