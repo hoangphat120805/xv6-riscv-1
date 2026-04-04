@@ -27,6 +27,7 @@ int pause(int);
 int uptime(void);
 int getprocs(struct procinfo*);
 int trace(int);
+uint64 mmap(void);
 
 // ulib.c
 int stat(const char*, struct stat*);
