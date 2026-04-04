@@ -105,4 +105,5 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
   int trace_mask;              // Trace mask for system calls
+  int shmem_mapped[MAX_SHMEM_PAGES]; // which shared memory regions are mapped
 };

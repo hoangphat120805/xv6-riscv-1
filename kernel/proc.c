@@ -150,6 +150,9 @@ found:
   // Initialize trace mask
   p->trace_mask = 0;
 
+  // Initialize shared memory tracking
+  memset(p->shmem_mapped, 0, sizeof(p->shmem_mapped));
+
   return p;
 }
 
@@ -172,6 +175,8 @@ freeproc(struct proc *p)
   p->chan = 0;
   p->killed = 0;
   p->xstate = 0;
+  p->trace_mask = 0;
+  memset(p->shmem_mapped, 0, sizeof(p->shmem_mapped));
   p->state = UNUSED;
 }
 
@@ -296,6 +301,9 @@ kfork(void)
   
   // Copy trace mask from parent to child
   np->trace_mask = p->trace_mask;
+
+  // Copy shared memory mapping flags from parent to child
+  memmove(np->shmem_mapped, p->shmem_mapped, sizeof(p->shmem_mapped));
 
   pid = np->pid;
 

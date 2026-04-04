@@ -132,7 +132,9 @@ sys_trace(void)
 uint64
 sys_mmap(void)
 {
-  return mmap();
+  int id;
+  argint(0, &id);
+  return mmap(id);
 }
 
 uint64
