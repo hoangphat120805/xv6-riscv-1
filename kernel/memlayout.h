@@ -60,6 +60,6 @@
 
 // Shared memory region: up to MAX_SHMEM_PAGES pages starting at SHMEM_BASE.
 // Each region i is mapped at SHMEM_BASE + i * PGSIZE.
-#define SHMEM_BASE  0x40000000L
+#define SHMEM_BASE  0x4000000L
 #define SHMEM_END   (SHMEM_BASE + MAX_SHMEM_PAGES * PGSIZE)
 #define SHMEM_ADDR(i) (SHMEM_BASE + (i) * PGSIZE)
